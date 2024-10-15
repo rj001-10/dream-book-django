@@ -101,7 +101,7 @@ The project will be accessible at `http://127.0.0.1:8000/`.
 |--------|------------------------|------------------------------------------|---------------|
 | POST   | `/auth/login/`      | User login (JWT)                            | No            |
 | POST   | `/auth/signup/`     | User signup                                 | No            |
-| GET    | `/dreams/`          | List all dreams (for admin)                 | Yes           |
+| GET    | `/dreams/`          | List all dreams                             | Yes           |
 | POST   | `/dreams/`          | Create a new dream                          | Yes           |
 | GET    | `/dreams/{id}/`     | Retrieve a dream by ID                      | Yes           |
 | PATCH  | `/dreams/{id}/`     | Update an existing dream                    | Yes           |
