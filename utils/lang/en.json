@@ -1,5 +1,6 @@
 {
   "AUTH_API": {
-    "SIGNUP_SUCCESS": "User created successfully!"
+    "SIGNUP_SUCCESS": "User created successfully!",
+    "SIGNUP_REQUIRED_FIELDS":"Email and password required"
   }
 }

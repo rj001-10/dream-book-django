@@ -30,7 +30,7 @@ class LoginView(APIView):
         email = request.data.get('email')   
         password = request.data.get('password')   
         if not email or not password:
-            return Response({'Error':'Email and password required'},status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Error':en['AUTH_API']['SIGNUP_REQUIRED_FIELDS']},status=status.HTTP_400_BAD_REQUEST)
         
         user = authenticate(username = email,password=password)
         
