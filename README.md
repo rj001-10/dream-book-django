@@ -101,15 +101,15 @@ The project will be accessible at `http://127.0.0.1:8000/`.
 |--------|------------------------|------------------------------------------|---------------|
 | POST   | `/auth/login/`      | User login (JWT)                            | No            |
 | POST   | `/auth/signup/`     | User signup                                 | No            |
-| GET    | `/dreams/`          | List all dreams                             | Yes           |
-| POST   | `/dreams/`          | Create a new dream                          | Yes           |
-| GET    | `/dreams/{id}/`     | Retrieve a dream by ID                      | Yes           |
-| PATCH  | `/dreams/{id}/`     | Update an existing dream                    | Yes           |
-| DELETE | `/dreams/{id}/`     | Delete a dream                              | Yes           |
-| POST   | `/dreams/{id}/like/`| Like a dream                                | Yes           |
-| POST   | `/dreams/{id}/dislike/`| Dislike a dream                          | Yes           |
-| POST   | `/dreams/{id}/comment/`| Add a comment to a dream                 | Yes           |
-| GET    | `/dreams/{id}/comments/`| Get all comments on a dream             | Yes           |
+| GET    | `/dream/`          | List all dreams                              | Yes           |
+| POST   | `/dream/`          | Create a new dream                           | Yes           |
+| GET    | `/dream/{id}/`     | Retrieve a dream by ID                       | Yes           |
+| PATCH  | `/dream/{id}/`     | Update an existing dream                     | Yes           |
+| DELETE | `/dream/{id}/`     | Delete a dream                               | Yes           |
+| POST   | `/dream/{id}/like/`| Like a dream                                 | Yes           |
+| POST   | `/dream/{id}/dislike/`| Dislike a dream                           | Yes           |
+| POST   | `/dream/{id}/comment/`| Add a comment to a dream                  | Yes           |
+| GET    | `/dream/{id}/comments/`| Get all comments on a dream              | Yes           |
 
 ### Authentication
 
