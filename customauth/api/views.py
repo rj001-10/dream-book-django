@@ -5,6 +5,11 @@ from rest_framework import status
 import json
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import api_view
+from customauth.models import User
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from customauth.api.permissions import IsAdminOrLoggedInUser
 
 with open('utils/lang/en.json','r') as f:
     en = json.load(f)
@@ -42,5 +47,12 @@ class LoginView(APIView):
             },status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)   
+
+class DeleteUserView(generics.DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes=[IsAuthenticated,IsAdminOrLoggedInUser]
+    
+        
             
             

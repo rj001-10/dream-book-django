@@ -18,11 +18,11 @@ class DreamCreateTests(APITestCase):
             last_name = 'User',
             email = 'existinguser@gmail.com',
         )
-        self.existing_user.set_password("Golden_123")
+        self.existing_user.set_password("Hello@123")
         self.existing_user.save()
         data = {
             'email': self.existing_user.email,
-            'password':'Golden_123'
+            'password':'Hello@123'
         }    
         
         response = self.client.post(self.loginurl,data)
@@ -132,11 +132,11 @@ class DreamListTests(APITestCase):
             is_admin = True,
             is_staff = True
         )
-        self.adminuser.set_password("Golden_123")
+        self.adminuser.set_password("Hello@123")
         self.adminuser.save()
         data = {
             'email': self.adminuser.email,
-            'password':'Golden_123'
+            'password':'Hello@123'
         }    
         response = self.client.post(self.loginurl,data)
         self.adminusertoken = response.data.get('access_token')
@@ -148,11 +148,11 @@ class DreamListTests(APITestCase):
             last_name = 'User',
             email = 'existinguser@gmail.com',
         )
-        self.existing_user1.set_password("Golden_123")
+        self.existing_user1.set_password("Hello@123")
         self.existing_user1.save()
         data = {
             'email': self.existing_user1.email,
-            'password':'Golden_123'
+            'password':'Hello@123'
         }    
         response = self.client.post(self.loginurl,data)
         self.existingusertoken1 = response.data.get('access_token')
@@ -182,11 +182,11 @@ class DreamListTests(APITestCase):
             last_name = 'User',
             email = 'existinguser2@gmail.com',
         )
-        self.existing_user2.set_password("Golden_123")
+        self.existing_user2.set_password("Hello@123")
         self.existing_user2.save()
         data = {
             'email': self.existing_user2.email,
-            'password':'Golden_123'
+            'password':'Hello@123'
         }    
         response = self.client.post(self.loginurl,data)
         self.existingusertoken2 = response.data.get('access_token')
