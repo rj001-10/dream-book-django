@@ -115,8 +115,8 @@ The project will be accessible at `http://127.0.0.1:8000/`.
 
 The project uses JWT (JSON Web Token) authentication. You can obtain a token by logging in with valid credentials:
 
-- **Login**: `/api/auth/login/`
-- **Signup**: `/api/auth/signup/`
+- **Login**: `/auth/login/`
+- **Signup**: `/auth/signup/`
 
 Once you have a token, include it in the headers of protected API requests:
 
@@ -141,7 +141,7 @@ Images for dreams are handled via multipart form uploads. You can use DRF's `Ima
 ### Example of Image Upload in API Request
 
 ```bash
-POST /api/dreams/
+POST /dreams/
 Content-Type: multipart/form-data
 Authorization: Bearer <token>
 
