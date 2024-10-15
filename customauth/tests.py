@@ -9,6 +9,7 @@ class AuthTests(APITestCase):
         self.login_url = reverse('login')
         self.signup_url = reverse('signup')
         
+     
     
     def test_signup_invalid_password2(self):
         # Test if user can successfully signup
@@ -46,6 +47,19 @@ class AuthTests(APITestCase):
         self.assertEqual(response.status_code,status.HTTP_201_CREATED)
         self.assertEqual(User.objects.count(),1)
         self.assertEqual(User.objects.get().email,data['email'])    
+    
+    def test_signup_invalid_existing_email(self):
+        # Test if user can successfully signup
+        self.test_signup()
+        
+        data = {
+            'email': 'testuser@gmail.com',
+            'password':'Golden_123',
+            'first_name':'Test',
+            'last_name':'User'
+        }
+        response = self.client.post(self.signup_url,data)
+        self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST) 
     
     def test_login(self):
         # Test if user successfully sigin and recieve token
