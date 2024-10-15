@@ -204,6 +204,7 @@ class DreamListTests(APITestCase):
          
         
         self.dream_detail_url = reverse('dream-detail',kwargs={'pk':self.existing_user1_dream_public.id})
+        self.dream_detail_url2 = reverse('dream-detail',kwargs={'pk':self.existing_user2_dream_public.id})
         self.dream_list_url = reverse('dream-list')
         
     
@@ -279,5 +280,12 @@ class DreamListTests(APITestCase):
         
         response = self.client.delete(self.dream_detail_url)    
         self.assertEqual(response.status_code,status.HTTP_204_NO_CONTENT)     
+        
+    def test_admin_user2_dream1_delete(self):
+        self.client.credentials(HTTP_AUTHORIZATION = f'Bearer {self.adminusertoken}')
+        
+        response = self.client.delete(self.dream_detail_url2)    
+        self.assertEqual(response.status_code,status.HTTP_204_NO_CONTENT)    
+             
     
                
