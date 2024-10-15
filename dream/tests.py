@@ -231,7 +231,24 @@ class DreamListTests(APITestCase):
         response = self.client.get(self.dream_list_url)    
         self.assertEqual(response.status_code,status.HTTP_200_OK)
         self.assertIsInstance(response.data,list)
-        self.assertEqual(len(response.data),Dream.objects.filter(is_active=True).count())  
+        self.assertEqual(len(response.data),Dream.objects.filter(is_active=True).count()) 
+    
+    def test_user_dream_list_search(self):
+        searchkeyword = 'my'
+        self.client.credentials(HTTP_AUTHORIZATION = f'Bearer {self.existingusertoken1}')
+        
+        response = self.client.get(self.dream_list_url,QUERY_STRING='search=My')    
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        self.assertIsInstance(response.data,list)
+        for dream in response.data:
+            assertion = (
+                    (searchkeyword in dream['title'].lower()) or 
+                    (searchkeyword in dream['description'].lower()) or
+                    (searchkeyword in dream['user']['email'].lower()) or
+                    (searchkeyword in dream['user']['first_name'].lower()) or
+                    (searchkeyword in dream['user']['last_name'].lower())
+                    )
+            self.assertEqual(assertion,True)
         
         
     def test_user1_dream1_detail(self):

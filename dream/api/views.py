@@ -10,6 +10,7 @@ class DreamListView(generics.ListCreateAPIView):
     serializer_class = DreamSerializer
     permission_classes = [IsAuthenticated]
     filter_backends=[filters.SearchFilter]
+    search_fields = ['title','description','user__email','user__first_name','user__last_name']
     pagination_class = LimitOffsetPagination
     
     def get_queryset(self):
