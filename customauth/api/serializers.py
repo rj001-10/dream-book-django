@@ -5,7 +5,7 @@ class UserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True)
     class Meta:
         model = User
-        fields = ['email','first_name','last_name','password','password2']
+        fields = ['email','first_name','last_name','password','password2','id']
         extra_kwargs = { 'password':{'write_only':True} }
     
     def save(self):
