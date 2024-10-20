@@ -1,12 +1,12 @@
 from rest_framework.test import APITestCase
 from django.urls import reverse
 from customauth.models import User
+from dream.models import DreamLikes
 import os
 from rest_framework import status
 from dream.models import Dream
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-# Create your tests here.
 class DreamCreateTests(APITestCase):
     def setUp(self):
         self.dream_list_url = reverse('dream-list')
@@ -305,4 +305,78 @@ class DreamListTests(APITestCase):
         self.assertEqual(response.status_code,status.HTTP_204_NO_CONTENT)    
              
     
-               
+class DreamLikeAndDeslikeTests(APITestCase):
+    def setUp(self):
+        self.dream_list_url = reverse('dream-list')
+        self.loginurl = reverse('login')
+        self.image_path = os.path.join( 'media','dream_image', 'testdreamimg.jpg')
+        
+        # existing user create and login
+        self.existing_user = User(
+            first_name = 'Existing',
+            last_name = 'User',
+            email = 'existinguser@gmail.com',
+        )
+        self.existing_user.set_password("Hello@123")
+        self.existing_user.save()
+        data = {
+            'email': self.existing_user.email,
+            'password':'Hello@123'
+        }    
+        
+        response = self.client.post(self.loginurl,data)
+        self.existingusertoken = response.data.get('access_token')
+        
+        self.existing_user2 = User(
+            first_name = 'Existing',
+            last_name = 'User',
+            email = 'existinguser2@gmail.com',
+        )
+        self.existing_user2.set_password("Hello@123")
+        self.existing_user2.save()
+        data = {
+            'email': self.existing_user2.email,
+            'password':'Hello@123'
+        }    
+        response = self.client.post(self.loginurl,data)
+        self.existingusertoken2 = response.data.get('access_token')
+        
+        with open(self.image_path,'rb') as img_file:
+            img = SimpleUploadedFile(name='testdreamimg.jpg', content=img_file.read(), content_type='image/jpeg')
+            data = {
+                'title': 'My first dream',
+                'description':'It was horror dream there is so many monsters',
+                'image':img,
+                'is_public':True,
+            } 
+            self.client.credentials(HTTP_AUTHORIZATION = f'Bearer {self.existingusertoken}')
+            
+            response = self.client.post(self.dream_list_url,data,format='multipart')   
+            self.createdDreamId  = response.data.get('id')
+            
+    
+    
+    def test_like_dream_without_auth(self):
+        self.client.credentials(HTTP_AUTHORIZATION = None)
+        response = self.client.post(reverse('dream-like',kwargs={'pk':self.createdDreamId}))
+        self.assertEqual(response.status_code,status.HTTP_401_UNAUTHORIZED) 
+    
+    def test_like_dream_with_invalid_dreamid(self):
+        self.client.credentials(HTTP_AUTHORIZATION = f'Bearer {self.existingusertoken2}')
+        response = self.client.post(reverse('dream-like',kwargs={'pk':100}))
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+    
+    def test_like_dream(self):
+        self.client.credentials(HTTP_AUTHORIZATION = f'Bearer {self.existingusertoken2}')
+        response = self.client.post(reverse('dream-like',kwargs={'pk':self.createdDreamId}))
+        
+        dreamlikes = DreamLikes.objects.filter(user__id=self.existing_user2.id,is_like = True,dream__id=self.createdDreamId).count()
+        self.assertEqual(dreamlikes,1) 
+        self.assertEqual(response.status_code,status.HTTP_200_OK)        
+    
+    def test_dislike_dream(self):
+        self.client.credentials(HTTP_AUTHORIZATION = f'Bearer {self.existingusertoken2}')
+        response = self.client.post(reverse('dream-dislike',kwargs={'pk':self.createdDreamId}))
+        dreamlikes = DreamLikes.objects.filter(user__id=self.existing_user2.id,is_like = False,dream__id=self.createdDreamId).count()
+        self.assertEqual(dreamlikes,1) 
+        self.assertEqual(response.status_code,status.HTTP_200_OK)              

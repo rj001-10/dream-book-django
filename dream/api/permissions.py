@@ -6,3 +6,4 @@ class IsAdminOrReadOnly(permissions.BasePermission):
         if request.user.is_admin or obj.user == request.user:
             return True 
         return False 
+

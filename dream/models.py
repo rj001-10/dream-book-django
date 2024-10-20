@@ -21,3 +21,19 @@ class Dream(models.Model):
     
     def __str__(self):
         return self.title
+
+
+class DreamLikes(models.Model):
+    dream = models.ForeignKey(Dream,on_delete=models.CASCADE,related_name='dreamlikes') 
+    is_like = models.BooleanField(default=False,null=True,blank=True)   
+    is_dislike = models.BooleanField(default=False,null=True,blank=True)   
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    
+    def __str__(self):
+        modelstring = f'{self.user.first_name} - {self.dream.title}'
+        if self.is_like:
+            modelstring += ' Liked'
+        
+        if self.is_dislike:
+            modelstring += ' DisLiked'    
+        return modelstring
